@@ -7,7 +7,7 @@ module.exports.upload = (event, context, callback) => {
   var params = JSON.parse(event.body);
 
   var s3Params = {
-    Bucket: 'aws-es-reto-img',
+    Bucket: process.env.S3_BUCKET,
     Key:  params.name,
     ContentType: params.type,
     ACL: 'public-read',

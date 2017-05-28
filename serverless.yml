@@ -4,11 +4,13 @@ provider:
   name: aws
   runtime: nodejs6.10
   profile: demo
+  environment:
+    S3_BUCKET: aws-es-reto-img
   iamRoleStatements:
     - Effect: "Allow"
       Action:
         - "s3:*"
-      Resource: "arn:aws:s3:::aws-es-reto-img/*"
+      Resource: "arn:aws:s3:::${self:provider.environment.S3_BUCKET}/*"
 
 functions:
   upload:
@@ -24,7 +26,7 @@ resources:
     UploadBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: aws-es-reto-img
+        BucketName: ${self:provider.environment.S3_BUCKET}
         AccessControl: PublicRead
         CorsConfiguration:
           CorsRules:
