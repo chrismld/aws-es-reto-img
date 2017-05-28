@@ -1,0 +1,39 @@
+service: aws-es-reto-img
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  profile: demo
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource: "arn:aws:s3:::aws-es-reto-img/*"
+
+functions:
+  upload:
+    handler: handler.upload
+    events:
+      - http:
+            path: upload
+            method: post
+            cors: true
+
+resources:
+  Resources:
+    UploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: aws-es-reto-img
+        AccessControl: PublicRead
+        CorsConfiguration:
+          CorsRules:
+          - AllowedMethods:
+            - GET
+            - PUT
+            - POST
+            - HEAD
+            AllowedOrigins:
+            - "*"
+            AllowedHeaders:
+            - "*"
